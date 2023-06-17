@@ -14,9 +14,16 @@ namespace RPG.Core
 
         public Vector3 GetVelocity() => _navMeshAgent.velocity;
 
-        public void MoveTo(Vector3 destination)
+        public void MoveTo(Vector3 destination, float stoppingDist)
         {
+            _navMeshAgent.isStopped = false;
+            _navMeshAgent.stoppingDistance = stoppingDist;
             _navMeshAgent.SetDestination(destination);
+        }
+
+        public void Stop()
+        {
+            _navMeshAgent.isStopped = true;
         }
     }
 }

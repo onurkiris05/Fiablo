@@ -33,20 +33,35 @@ namespace RPG.Player
             _ray = Camera.main.ScreenPointToRay(pos);
             _hits = Physics.RaycastAll(_ray, Mathf.Infinity);
 
+            if (_hits.Length == 0) return;
+
             foreach (var hit in _hits)
             {
-                if (hit.transform.gameObject.layer == targetLayer.LayerToInt())
-                    ProcessMovement(hit.point);
-
                 if (hit.transform.TryGetComponent(out CombatTarget combatTarget))
+                {
                     ProcessAttack(combatTarget);
+                    ProcessMovement(hit.point, _combatHandler.WeaponRange);
+                    GameManager.Instance.InvokeOnStateChange(GameState.Attacking);
+                    break;
+                }
+
+                if (hit.transform.gameObject.layer == targetLayer.LayerToInt())
+                {
+                    ProcessMovement(hit.point, 0f);
+                    GameManager.Instance.InvokeOnStateChange(GameState.Moving);
+                }
             }
         }
 
-        private void ProcessMovement(Vector3 pos)
+        private void ProcessMovement(Vector3 pos, float stoppingDist)
         {
             _targetPos = pos;
-            _movementHandler.MoveTo(_targetPos);
+            _movementHandler.MoveTo(_targetPos, stoppingDist);
+        }
+
+        private void ProcessStopMovement()
+        {
+            _movementHandler.Stop();
         }
 
         private void ProcessAttack(CombatTarget combatTarget)
