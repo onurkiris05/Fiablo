@@ -61,6 +61,7 @@ GameObject:
   - component: {fileID: 2363493163568230563}
   - component: {fileID: 1361064202089057743}
   - component: {fileID: 7564307806495554296}
+  - component: {fileID: 2289329803132598740}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -122,6 +123,7 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
+  cam: {fileID: 0}
 --- !u!114 &1361064202089057739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,6 +170,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 51ad1ce56a2050e428038fbd7274d655, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponDamage: 15
+  weaponRange: 2
+  timeBetweenAttacks: 1
+--- !u!114 &2289329803132598740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3229374940606687425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39e6f37db78b857428b38802de350cc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5396826679706022839

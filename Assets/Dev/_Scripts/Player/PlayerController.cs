@@ -7,14 +7,13 @@ namespace RPG.Player
     public class PlayerController : MonoBehaviour
     {
         [Header("Control Settings")]
-        [SerializeField] LayerMask targetLayer;
+        [SerializeField] private LayerMask targetLayer;
 
         private MovementHandler _movementHandler;
         private AnimationHandler _animationHandler;
         private CombatHandler _combatHandler;
         private RaycastHit[] _hits;
         private Ray _ray;
-        private Vector3 _targetPos;
 
         private void Awake()
         {
@@ -30,6 +29,7 @@ namespace RPG.Player
 
         public void ProcessInput(Vector2 pos)
         {
+            print(pos);
             _ray = Camera.main.ScreenPointToRay(pos);
             _hits = Physics.RaycastAll(_ray, Mathf.Infinity);
 
@@ -39,40 +39,17 @@ namespace RPG.Player
             {
                 if (hit.transform.TryGetComponent(out CombatTarget combatTarget))
                 {
-                    ProcessAttack(combatTarget);
-                    ProcessMovement(hit.point, _combatHandler.WeaponRange);
-                    GameManager.Instance.InvokeOnStateChange(GameState.Attacking);
+                    _combatHandler.ProcessAttack(combatTarget);
+                    _movementHandler.MoveTo(hit.point);
                     break;
                 }
 
                 if (hit.transform.gameObject.layer == targetLayer.LayerToInt())
                 {
-                    ProcessMovement(hit.point, 0f);
-                    GameManager.Instance.InvokeOnStateChange(GameState.Moving);
+                    _combatHandler.Cancel();
+                    _movementHandler.MoveTo(hit.point);
                 }
             }
-        }
-
-        private void ProcessMovement(Vector3 pos, float stoppingDist)
-        {
-            _targetPos = pos;
-            _movementHandler.MoveTo(_targetPos, stoppingDist);
-        }
-
-        private void ProcessStopMovement()
-        {
-            _movementHandler.Stop();
-        }
-
-        private void ProcessAttack(CombatTarget combatTarget)
-        {
-            _combatHandler.Attack(combatTarget);
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(_targetPos, 0.5f);
         }
     }
 }

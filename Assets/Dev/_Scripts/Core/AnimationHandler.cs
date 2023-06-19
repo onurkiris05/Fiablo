@@ -18,5 +18,10 @@ namespace RPG.Core
             var speed = localVelocity.z;
             _animator.SetFloat("forwardSpeed", speed);
         }
+
+        public void SetTrigger(string triggerName)
+        {
+            _animator.SetTrigger(triggerName);
+        }
     }
 }

@@ -1,14 +1,11 @@
 fileFormatVersion: 2
-guid: 25579d4189515be4482b8b9e9e149bbc
+guid: 8e21bdee9109ed947ac0f7748a4d1744
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: mixamo.com
-  - first:
-      74: -9121621101649706817
-    second: Run
+    second: Unarmed Attack
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -39,18 +36,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Run
+      name: Unarmed Attack
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 19
+      lastFrame: 65
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 1
