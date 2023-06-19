@@ -29,7 +29,6 @@ namespace RPG.Player
 
         public void ProcessInput(Vector2 pos)
         {
-            print(pos);
             _ray = Camera.main.ScreenPointToRay(pos);
             _hits = Physics.RaycastAll(_ray, Mathf.Infinity);
 

@@ -1,60 +1,55 @@
 using UnityEngine;
-using UnityEngine.InputSystem.EnhancedTouch;
-using ETouch = UnityEngine.InputSystem.EnhancedTouch;
+using Lean.Touch;
 
 namespace RPG.Player
 {
     public class InputHandler : MonoBehaviour
     {
-        private PlayerController  _playerController;
-        private Finger _finger;
-    
+        private PlayerController _playerController;
+        private LeanFinger _finger;
+
         private void Awake()
         {
             _playerController = GetComponent<PlayerController>();
         }
-    
+
         private void OnEnable()
         {
-            EnhancedTouchSupport.Enable();
-    
-            ETouch.Touch.onFingerDown += HandleFingerDown;
-            ETouch.Touch.onFingerUp += HandleFingerUp;
-            ETouch.Touch.onFingerMove += HandleFingerMove;
+            LeanTouch.OnFingerDown += HandleFingerDown;
+            LeanTouch.OnFingerUpdate += HandleFingerUpdate;
+            LeanTouch.OnFingerUp += HandleFingerUp;
         }
-    
+
         private void OnDisable()
         {
-            ETouch.Touch.onFingerDown -= HandleFingerDown;
-            ETouch.Touch.onFingerUp -= HandleFingerUp;
-            ETouch.Touch.onFingerMove -= HandleFingerMove;
-    
-            EnhancedTouchSupport.Disable();
+            LeanTouch.OnFingerDown -= HandleFingerDown;
+            LeanTouch.OnFingerUpdate -= HandleFingerUpdate;
+            LeanTouch.OnFingerUp -= HandleFingerUp;
         }
-    
-        private void HandleFingerDown(Finger touchedFinger)
+
+        private void HandleFingerDown(LeanFinger touchedFinger)
         {
             if (_finger == null)
             {
                 _finger = touchedFinger;
-    
-                _playerController.ProcessInput(_finger.currentTouch.screenPosition);
+
+                _playerController.ProcessInput(touchedFinger.ScreenPosition);
             }
         }
-    
-        private void HandleFingerUp(Finger lostFinger)
+
+        private void HandleFingerUpdate(LeanFinger movedFinger)
+        {
+            if (movedFinger == _finger)
+            {
+                _playerController.ProcessInput(movedFinger.ScreenPosition);
+            }
+        }
+        
+        private void HandleFingerUp(LeanFinger lostFinger)
         {
             if (lostFinger == _finger)
             {
                 _finger = null;
-            }
-        }
-    
-        private void HandleFingerMove(Finger movedFinger)
-        {
-            if (movedFinger == _finger)
-            {
-                _playerController.ProcessInput(_finger.currentTouch.screenPosition);
             }
         }
     }

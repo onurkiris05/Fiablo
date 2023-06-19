@@ -13,6 +13,7 @@ namespace RPG.Combat
         private ActionScheduler _actionScheduler;
         private AnimationHandler _animationHandler;
         private CombatTarget _target;
+        private HealthHandler _healthHandler;
         
         private Coroutine _attackCoroutine;
         private bool _isTriggered;
@@ -60,13 +61,21 @@ namespace RPG.Combat
         {
             if (_target.TryGetComponent(out HealthHandler healthHandler))
             {
+                _healthHandler = healthHandler;
+                
                 while (true)
                 {
+                    transform.LookAt(_target.transform);
                     _animationHandler.SetTrigger("attack");
-                    healthHandler.TakeDamage(weaponDamage);
+                    // This will trigger Hit() event in "attack" animation.
                     yield return Helpers.BetterWaitForSeconds(timeBetweenAttacks);
                 }
             }
-        } 
+        }
+
+        private void Hit()
+        {
+            _healthHandler.TakeDamage(weaponDamage);
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace RPG.Core
 
         private void Awake()
         {
-            _animator = GetComponentInChildren<Animator>();
+            _animator = GetComponent<Animator>();
         }
 
         public void UpdateAnimation(Vector3 currentVelocity)
