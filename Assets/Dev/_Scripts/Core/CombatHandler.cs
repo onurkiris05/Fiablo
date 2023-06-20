@@ -10,39 +10,41 @@ namespace RPG.Combat
         [SerializeField] private float weaponRange = 2f;
         [SerializeField] private float timeBetweenAttacks = 1f;
 
-        private ActionScheduler _actionScheduler;
-        private AnimationHandler _animationHandler;
-        private CombatTarget _target;
-        private HealthHandler _healthHandler;
+        public bool IsAttacking => _isAttacking;
         
+        private ICharacter _character;
+        private ActionScheduler _actionScheduler;
+        private HealthHandler _target;
         private Coroutine _attackCoroutine;
         private bool _isTriggered;
+        private bool _isAttacking;
 
         private void Awake()
         {
             _actionScheduler = GetComponent<ActionScheduler>();
-            _animationHandler = GetComponent<AnimationHandler>();
         }
 
         private void Update()
         {
             if (!_isTriggered) return;
 
-            var distance = (_target.transform.position - transform.position).sqrMagnitude;
-            if (distance <= weaponRange.Sqr())
+            if (InAttackRange())
             {
                 _isTriggered = false;
                 _actionScheduler.StartAction(this);
                 _attackCoroutine = StartCoroutine(AttackBehaviour());
-                print("Actually attacking");
             }
         }
 
-        public void ProcessAttack(CombatTarget target)
+        public void Init(ICharacter character)
+        {
+            _character = character;
+        }
+
+        public void Attack(HealthHandler target)
         {
             if (_isTriggered) return;
 
-            print("Going to Attack");
             _target = target;
             _isTriggered = true;
         }
@@ -52,30 +54,44 @@ namespace RPG.Combat
             if (_attackCoroutine != null)
             {
                 StopCoroutine(_attackCoroutine);
+                _character.ProcessResetTrigger("attack");
+                _character.ProcessSetTrigger("stopAttack");
             }
+
+            _isAttacking = false;
             _isTriggered = false;
             _target = null;
         }
 
+        private bool InAttackRange()
+        {
+            var distance = (_target.transform.position - transform.position).sqrMagnitude;
+            _isAttacking = distance <= weaponRange.Sqr();
+            return _isAttacking;
+        }
+
         private IEnumerator AttackBehaviour()
         {
-            if (_target.TryGetComponent(out HealthHandler healthHandler))
+            while (true)
             {
-                _healthHandler = healthHandler;
-                
-                while (true)
+                if (_target.IsDead)
                 {
-                    transform.LookAt(_target.transform);
-                    _animationHandler.SetTrigger("attack");
-                    // This will trigger Hit() event in "attack" animation.
-                    yield return Helpers.BetterWaitForSeconds(timeBetweenAttacks);
+                    Cancel();
+                    yield break;
                 }
+
+                transform.LookAt(_target.transform);
+                _character.ProcessResetTrigger("stopAttack");
+                _character.ProcessSetTrigger("attack");
+                // This will trigger Hit() event in "attack" animation.
+                yield return Helpers.BetterWaitForSeconds(timeBetweenAttacks);
             }
         }
 
         private void Hit()
         {
-            _healthHandler.TakeDamage(weaponDamage);
+            if (_target == null) return;
+            _target.TakeDamage(weaponDamage);
         }
     }
 }

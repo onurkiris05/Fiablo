@@ -1,7 +1,8 @@
 using UnityEngine;
 using Lean.Touch;
+using RPG.Control;
 
-namespace RPG.Player
+namespace RPG.Core
 {
     public class InputHandler : MonoBehaviour
     {

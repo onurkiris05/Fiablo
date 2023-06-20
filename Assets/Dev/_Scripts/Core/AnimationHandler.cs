@@ -11,7 +11,7 @@ namespace RPG.Core
             _animator = GetComponent<Animator>();
         }
 
-        public void UpdateAnimation(Vector3 currentVelocity)
+        public void UpdateLocomotion(Vector3 currentVelocity)
         {
             var velocity = currentVelocity;
             var localVelocity = transform.InverseTransformDirection(velocity);
@@ -22,6 +22,11 @@ namespace RPG.Core
         public void SetTrigger(string triggerName)
         {
             _animator.SetTrigger(triggerName);
+        }
+        
+        public void ResetTrigger(string triggerName)
+        {
+            _animator.ResetTrigger(triggerName);
         }
     }
 }

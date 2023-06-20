@@ -6,7 +6,15 @@ namespace RPG.Core
     {
         [SerializeField ] float health = 100f;
         
+        public bool IsDead => _isDead;
+        
+        private ICharacter _character;
         private bool _isDead;
+        
+        public void Init(ICharacter character)
+        {
+            _character = character;
+        }
 
         public void TakeDamage(float damage)
         {
@@ -25,6 +33,7 @@ namespace RPG.Core
         private void Die()
         {
             _isDead = true;
+            _character.ProcessDie();
             print("Died!!");
         }
     }
