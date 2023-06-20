@@ -7,7 +7,7 @@ namespace RPG.Core
     {
         [SerializeField] private float chaseRadius = 5f;
 
-        private EnemyController _enemyController;
+        private EnemyController _enemy;
         private PlayerController _player;
         private bool _isChasing;
 
@@ -15,7 +15,7 @@ namespace RPG.Core
 
         private void Awake()
         {
-            _enemyController = GetComponent<EnemyController>();
+            _enemy = GetComponent<EnemyController>();
         }
 
         private void Start()
@@ -26,16 +26,18 @@ namespace RPG.Core
 
         private void Update()
         {
+            if (_enemy.IsDead()) return;
+
             ProcessDetection();
         }
 
         private void ProcessDetection()
         {
-            if (InChaseRange() && !_player.IsDead)
+            if (InChaseRange() && !_player.IsDead())
             {
                 Chase();
             }
-            else if (!InChaseRange() || _player.IsDead)
+            else if (!InChaseRange() || _player.IsDead())
             {
                 Patrol();
             }
@@ -45,17 +47,17 @@ namespace RPG.Core
         {
             if (!_isChasing) return;
             _isChasing = false;
-            _enemyController.ProcessPatrol(_firstPos);
+            _enemy.ProcessPatrol(_firstPos);
             print($"Leaving chase to {_player.gameObject.name}");
         }
 
         private void Chase()
         {
-            if (_player.TryGetComponent(out HealthHandler target) &&
-                !_enemyController.IsAttacking)
+            if (!_enemy.IsAttacking &&
+                _player.TryGetComponent(out HealthHandler target))
             {
                 _isChasing = true;
-                _enemyController.ProcessAttack(target);
+                _enemy.ProcessAttack(target);
                 print($"Chasing {_player.gameObject.name}");
             }
         }

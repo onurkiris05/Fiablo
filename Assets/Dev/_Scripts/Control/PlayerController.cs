@@ -10,12 +10,13 @@ namespace RPG.Control
         [SerializeField] private LayerMask movementLayer;
         [SerializeField] private LayerMask targetLayer;
 
-        public bool IsDead => _healthHandler.IsDead;
+        public bool IsDead() => _healthHandler.IsDead;
 
         private MovementHandler _movementHandler;
         private AnimationHandler _animationHandler;
         private CombatHandler _combatHandler;
         private HealthHandler _healthHandler;
+        private CapsuleCollider _capsuleCollider;
         private RaycastHit[] _hits;
         private Ray _ray;
 
@@ -25,6 +26,7 @@ namespace RPG.Control
             _animationHandler = GetComponent<AnimationHandler>();
             _combatHandler = GetComponent<CombatHandler>();
             _healthHandler = GetComponent<HealthHandler>();
+            _capsuleCollider = GetComponent<CapsuleCollider>();
 
             _combatHandler.Init(this);
             _healthHandler.Init(this);
@@ -57,6 +59,9 @@ namespace RPG.Control
 
         public void ProcessDie()
         {
+            _combatHandler.Cancel();
+            _movementHandler.Cancel();
+            _capsuleCollider.enabled = false;
             _animationHandler.SetTrigger("die");
         }
 

@@ -7,7 +7,8 @@ namespace RPG.Control
     public class EnemyController : MonoBehaviour, ICharacter
     {
         public bool IsAttacking => _combatHandler.IsAttacking;
-        
+        public bool IsDead() => _healthHandler.IsDead;
+
         private MovementHandler _movementHandler;
         private AnimationHandler _animationHandler;
         private CombatHandler _combatHandler;
@@ -44,6 +45,8 @@ namespace RPG.Control
 
         public void ProcessDie()
         {
+            _combatHandler.Cancel();
+            _movementHandler.Cancel();
             _animationHandler.SetTrigger("die");
             _capsuleCollider.enabled = false;
         }

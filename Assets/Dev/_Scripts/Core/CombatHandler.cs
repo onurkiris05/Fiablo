@@ -11,7 +11,7 @@ namespace RPG.Combat
         [SerializeField] private float timeBetweenAttacks = 1f;
 
         public bool IsAttacking => _isAttacking;
-        
+
         private ICharacter _character;
         private ActionScheduler _actionScheduler;
         private HealthHandler _target;
@@ -26,7 +26,7 @@ namespace RPG.Combat
 
         private void Update()
         {
-            if (!_isTriggered) return;
+            if (!_isTriggered || _character.IsDead()) return;
 
             if (InAttackRange())
             {
