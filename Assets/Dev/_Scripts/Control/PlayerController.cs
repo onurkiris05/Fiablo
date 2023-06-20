@@ -1,100 +1,55 @@
 using UnityEngine;
 using RPG.Core;
-using RPG.Combat;
+using RPG.Control;
 
-namespace RPG.Control
+public class PlayerController : ControllerBase
 {
-    public class PlayerController : MonoBehaviour, ICharacter
+    [Header("Control Settings")]
+    [SerializeField] private LayerMask movementLayer;
+    [SerializeField] private LayerMask targetLayer;
+
+    private RaycastHit[] _hits;
+    private Ray _ray;
+
+    public void ProcessInput(Vector2 pos)
     {
-        [Header("Control Settings")]
-        [SerializeField] private LayerMask movementLayer;
-        [SerializeField] private LayerMask targetLayer;
+        if (_healthHandler.IsDead) return;
 
-        public bool IsDead() => _healthHandler.IsDead;
+        _ray = Camera.main.ScreenPointToRay(pos);
+        _hits = Physics.RaycastAll(_ray, Mathf.Infinity);
 
-        private MovementHandler _movementHandler;
-        private AnimationHandler _animationHandler;
-        private CombatHandler _combatHandler;
-        private HealthHandler _healthHandler;
-        private CapsuleCollider _capsuleCollider;
-        private RaycastHit[] _hits;
-        private Ray _ray;
+        if (_hits.Length == 0) return;
 
-        private void Awake()
+        foreach (var hit in _hits)
         {
-            _movementHandler = GetComponent<MovementHandler>();
-            _animationHandler = GetComponent<AnimationHandler>();
-            _combatHandler = GetComponent<CombatHandler>();
-            _healthHandler = GetComponent<HealthHandler>();
-            _capsuleCollider = GetComponent<CapsuleCollider>();
+            // Process attack if ray hit to a target
+            if (CanAttack(hit))
+                break;
 
-            _combatHandler.Init(this);
-            _healthHandler.Init(this);
+            // Process movement if ray hit to terrain
+            Move(hit);
+        }
+    }
+
+    private bool CanAttack(RaycastHit hit)
+    {
+        if (hit.transform.gameObject.layer == targetLayer.LayerToInt() &&
+            hit.transform.TryGetComponent(out HealthHandler target))
+        {
+            _combatHandler.Attack(target);
+            _movementHandler.MoveTo(hit.point);
+            return true;
         }
 
-        private void Update()
-        {
-            _animationHandler.UpdateLocomotion(_movementHandler.GetVelocity());
-        }
+        return false;
+    }
 
-        public void ProcessInput(Vector2 pos)
-        {
-            if (_healthHandler.IsDead) return;
-
-            _ray = Camera.main.ScreenPointToRay(pos);
-            _hits = Physics.RaycastAll(_ray, Mathf.Infinity);
-
-            if (_hits.Length == 0) return;
-
-            foreach (var hit in _hits)
-            {
-                // Process attack if ray hit to a target
-                if (CanAttack(hit))
-                    break;
-
-                // Process movement if ray hit to terrain
-                Move(hit);
-            }
-        }
-
-        public void ProcessDie()
+    private void Move(RaycastHit hit)
+    {
+        if (hit.transform.gameObject.layer == movementLayer.LayerToInt())
         {
             _combatHandler.Cancel();
-            _movementHandler.Cancel();
-            _capsuleCollider.enabled = false;
-            _animationHandler.SetTrigger("die");
-        }
-
-        public void ProcessSetTrigger(string triggerName)
-        {
-            _animationHandler.SetTrigger(triggerName);
-        }
-
-        public void ProcessResetTrigger(string triggerName)
-        {
-            _animationHandler.ResetTrigger(triggerName);
-        }
-
-        private bool CanAttack(RaycastHit hit)
-        {
-            if (hit.transform.gameObject.layer == targetLayer.LayerToInt() &&
-                hit.transform.TryGetComponent(out HealthHandler target))
-            {
-                _combatHandler.Attack(target);
-                _movementHandler.MoveTo(hit.point);
-                return true;
-            }
-
-            return false;
-        }
-
-        private void Move(RaycastHit hit)
-        {
-            if (hit.transform.gameObject.layer == movementLayer.LayerToInt())
-            {
-                _combatHandler.Cancel();
-                _movementHandler.MoveTo(hit.point);
-            }
+            _movementHandler.MoveTo(hit.point);
         }
     }
 }
