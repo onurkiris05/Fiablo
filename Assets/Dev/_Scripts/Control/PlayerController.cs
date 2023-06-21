@@ -35,6 +35,7 @@ public class PlayerController : ControllerBase
                 break;
 
             // Process movement if ray hit to terrain
+            CancelCurrentAction();
             Move(hit);
         }
     }
@@ -64,9 +65,8 @@ public class PlayerController : ControllerBase
         if (hit.transform.gameObject.layer == targetLayer.LayerToInt() &&
             hit.transform.TryGetComponent(out HealthHandler target))
         {
-            print("Attack launched");
             _combatHandler.Attack(target);
-            _movementHandler.MoveTo(hit.point);
+            _movementHandler.MoveToTarget(target.transform);
             return true;
         }
 
@@ -77,9 +77,8 @@ public class PlayerController : ControllerBase
     {
         if (hit.transform.gameObject.layer == movementLayer.LayerToInt())
         {
-            print("Move launched");
             _combatHandler.Cancel();
-            _movementHandler.MoveTo(hit.point);
+            _movementHandler.MoveToDestination(hit.point);
         }
     }
 }

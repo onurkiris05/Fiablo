@@ -17,11 +17,11 @@ using UnityEngine;
         public void ProcessAttack(HealthHandler target)
         {
             _combatHandler.Attack(target);
-            _movementHandler.MoveTo(target.transform.position);
+            _movementHandler.MoveToTarget(target.transform);
         }
 
         public void ProcessMove(Vector3 target)
         {
-            _movementHandler.MoveTo(target);
+            _movementHandler.MoveToDestination(target);
         }
     }

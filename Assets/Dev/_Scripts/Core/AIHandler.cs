@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using RPG.Control;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace RPG.Core
         private EnemyController _enemy;
         private PlayerController _player;
         private Vector3 _guardPos;
+        private List<Coroutine> _coroutineList = new ();
         private bool _isPatrolling = true;
         private bool _isChasing;
         private bool _isDwelling;
@@ -49,32 +51,48 @@ namespace RPG.Core
         private void ProcessSuspicious()
         {
             if (!InChaseRange() && !_player.IsDead() && _isChasing)
-                StartCoroutine(Suspicion());
+                ProcessCoroutine(Suspicious());
+            // _suspiciousCoroutine = StartCoroutine(Suspicion());
         }
 
         private void ProcessPatrol()
         {
             if (_isPatrolling || _player.IsDead())
                 if (!_isDwelling)
-                    StartCoroutine(Patrol());
+                    ProcessCoroutine(Patrol());
+        }
+
+        private void ProcessCoroutine(IEnumerator routine)
+        {
+            if (_coroutineList.Count > 0)
+                foreach (Coroutine coroutine in _coroutineList)
+                    StopCoroutine(coroutine);
+            
+            _coroutineList.Clear();
+            var newCoroutine = StartCoroutine(routine);
+            _coroutineList.Add(newCoroutine);
         }
 
         private void Chase()
         {
-            if (!_enemy.IsAttacking &&
-                _player.TryGetComponent(out HealthHandler target))
+            if (_enemy.IsAttacking) return;
+
+            if (_player.TryGetComponent(out HealthHandler target))
             {
                 _isChasing = true;
                 _isPatrolling = false;
                 _enemy.ProcessAttack(target);
             }
         }
-        
-        private IEnumerator Suspicion()
+
+        private IEnumerator Suspicious()
         {
             _isChasing = false;
+            _enemy.CancelCurrentAction();
             _enemy.ProcessMove(_player.transform.position);
+            print("Suspicion started");
             yield return Helpers.BetterWaitForSeconds(suspicionTime);
+            print("Suspicion ended");
             _isPatrolling = true;
         }
 
@@ -87,7 +105,9 @@ namespace RPG.Core
                 {
                     // Get next waypoint by adding +1
                     _isDwelling = true;
+                    print("Dwelling started");
                     yield return Helpers.BetterWaitForSeconds(waypointDwellTime);
+                    print("Dwelling ended");
                     _currentWaypointIndex = patrolPath.GetIndex(_currentWaypointIndex + 1);
                     _isDwelling = false;
                 }

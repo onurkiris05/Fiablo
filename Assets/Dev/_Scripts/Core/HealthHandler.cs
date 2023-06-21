@@ -10,13 +10,11 @@ namespace RPG.Core
         public bool IsDead => _isDead;
 
         private ControllerBase _character;
-        private ActionScheduler _actionScheduler;
         private bool _isDead;
 
-        public void Init(ControllerBase character, ActionScheduler scheduler)
+        public void Init(ControllerBase character)
         {
             _character = character;
-            _actionScheduler = scheduler;
         }
 
         public void TakeDamage(float damage)
@@ -37,7 +35,7 @@ namespace RPG.Core
         {
             _isDead = true;
             _character.ProcessDie();
-            _actionScheduler.CancelCurrentAction();
+            _character.CancelCurrentAction();
             print("Died!!");
         }
     }

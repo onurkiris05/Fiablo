@@ -30,8 +30,8 @@ namespace RPG.Control
             _animator = GetComponent<Animator>();
             _capsuleCollider = GetComponent<CapsuleCollider>();
 
+            _healthHandler.Init(this);
             _combatHandler.Init(this, _actionScheduler);
-            _healthHandler.Init(this, _actionScheduler);
             _movementHandler.Init(_navMeshAgent, _actionScheduler);
             _animationHandler.Init(_animator);
         }
@@ -56,6 +56,11 @@ namespace RPG.Control
         public virtual void ProcessResetTrigger(string triggerName)
         {
             _animationHandler.ResetTrigger(triggerName);
+        }
+        
+        public virtual void CancelCurrentAction()
+        {
+            _actionScheduler.CancelCurrentAction();
         }
     }
 }
