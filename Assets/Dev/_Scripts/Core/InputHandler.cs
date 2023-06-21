@@ -1,17 +1,18 @@
 using UnityEngine;
 using Lean.Touch;
-using RPG.Control;
 
 namespace RPG.Core
 {
     public class InputHandler : MonoBehaviour
     {
-        private PlayerController _playerController;
+        [SerializeField] private float fingerMoveTolerance = 30f;
+        
+        private PlayerController _player;
         private LeanFinger _finger;
 
-        private void Awake()
+        public void Init(PlayerController player)
         {
-            _playerController = GetComponent<PlayerController>();
+            _player = player;
         }
 
         private void OnEnable()
@@ -34,24 +35,30 @@ namespace RPG.Core
             {
                 _finger = touchedFinger;
 
-                _playerController.ProcessInput(touchedFinger.ScreenPosition);
+                _player.ProcessInputOnFingerDown(_finger);
             }
         }
 
         private void HandleFingerUpdate(LeanFinger movedFinger)
         {
-            if (movedFinger == _finger)
+            if (movedFinger == _finger && IsMoved(movedFinger))
             {
-                _playerController.ProcessInput(movedFinger.ScreenPosition);
+                _player.ProcessInputOnFingerMove(_finger);
             }
         }
-        
+
         private void HandleFingerUp(LeanFinger lostFinger)
         {
             if (lostFinger == _finger)
             {
                 _finger = null;
             }
+        }
+        
+        private bool IsMoved(LeanFinger movedFinger)
+        {
+            var dist=(movedFinger.LastScreenPosition - movedFinger.StartScreenPosition).sqrMagnitude;
+            return dist > fingerMoveTolerance.Sqr();
         }
     }
 }

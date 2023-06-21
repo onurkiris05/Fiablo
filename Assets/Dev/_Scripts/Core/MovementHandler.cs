@@ -8,10 +8,10 @@ namespace RPG.Core
         private NavMeshAgent _navMeshAgent;
         private ActionScheduler _actionScheduler;
 
-        private void Awake()
+        public void Init(NavMeshAgent agent, ActionScheduler scheduler)
         {
-            _navMeshAgent = GetComponent<NavMeshAgent>();
-            _actionScheduler = GetComponent<ActionScheduler>();
+            _navMeshAgent = agent;
+            _actionScheduler = scheduler;
         }
 
         public Vector3 GetVelocity() => _navMeshAgent.velocity;

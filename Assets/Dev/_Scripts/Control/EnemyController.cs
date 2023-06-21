@@ -4,7 +4,15 @@ using UnityEngine;
 
     public class EnemyController : ControllerBase
     {
-        public bool IsAttacking => _combatHandler.IsAttacking;
+        private AIHandler _aiHandler;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            
+            _aiHandler = GetComponent<AIHandler>();
+            _aiHandler.Init(this);
+        }
 
         public void ProcessAttack(HealthHandler target)
         {
@@ -12,7 +20,7 @@ using UnityEngine;
             _movementHandler.MoveTo(target.transform.position);
         }
 
-        public void ProcessPatrol(Vector3 target)
+        public void ProcessMove(Vector3 target)
         {
             _movementHandler.MoveTo(target);
         }

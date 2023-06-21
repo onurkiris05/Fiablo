@@ -87,6 +87,11 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8515759653100310667, guid: d2559db2e60b6a84ba401b869d169af0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8561802478180988505, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: weaponRange
@@ -123,6 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90350234d2fb87a4a90045582ca5f66b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fingerMoveTolerance: 30
 --- !u!114 &4620252121969463996
 MonoBehaviour:
   m_ObjectHideFlags: 0

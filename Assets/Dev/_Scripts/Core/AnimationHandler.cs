@@ -5,10 +5,10 @@ namespace RPG.Core
     public class AnimationHandler : MonoBehaviour
     {
         private Animator _animator;
-
-        private void Awake()
+        
+        public void Init(Animator animator)
         {
-            _animator = GetComponent<Animator>();
+            _animator = animator;
         }
 
         public void UpdateLocomotion(Vector3 currentVelocity)

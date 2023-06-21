@@ -1,4 +1,5 @@
 using System.Collections;
+using RPG.Control;
 using RPG.Core;
 using UnityEngine;
 
@@ -12,16 +13,17 @@ namespace RPG.Combat
 
         public bool IsAttacking => _isAttacking;
 
-        private ICharacter _character;
+        private ControllerBase _character;
         private ActionScheduler _actionScheduler;
         private HealthHandler _target;
         private Coroutine _attackCoroutine;
         private bool _isTriggered;
         private bool _isAttacking;
-
-        private void Awake()
+        
+        public void Init(ControllerBase character, ActionScheduler scheduler)
         {
-            _actionScheduler = GetComponent<ActionScheduler>();
+            _character = character;
+            _actionScheduler = scheduler;
         }
 
         private void Update()
@@ -34,11 +36,6 @@ namespace RPG.Combat
                 _actionScheduler.StartAction(this);
                 _attackCoroutine = StartCoroutine(AttackBehaviour());
             }
-        }
-
-        public void Init(ICharacter character)
-        {
-            _character = character;
         }
 
         public void Attack(HealthHandler target)
@@ -74,7 +71,7 @@ namespace RPG.Combat
         {
             while (true)
             {
-                if (_target.IsDead)
+                if (_target.IsDead || !InAttackRange())
                 {
                     Cancel();
                     yield break;

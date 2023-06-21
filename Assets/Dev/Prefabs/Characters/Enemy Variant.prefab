@@ -15,7 +15,7 @@ PrefabInstance:
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -17.03
       objectReference: {fileID: 0}
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
@@ -25,12 +25,12 @@ PrefabInstance:
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1.7
       objectReference: {fileID: 0}
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.4482861
       objectReference: {fileID: 0}
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
@@ -40,7 +40,7 @@ PrefabInstance:
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.8938902
       objectReference: {fileID: 0}
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
@@ -55,7 +55,7 @@ PrefabInstance:
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 126.732
       objectReference: {fileID: 0}
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
@@ -105,7 +105,7 @@ PrefabInstance:
     - target: {fileID: 8561802478180988505, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: weaponRange
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2559db2e60b6a84ba401b869d169af0, type: 3}
@@ -133,7 +133,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f83b69ae33a99e43aef60b0e73d4798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  patrolPath: {fileID: 0}
+  waypointTolerance: 1
+  waypointDwellTime: 3
   chaseRadius: 5
+  suspicionTime: 4
 --- !u!114 &7647476961805948933
 MonoBehaviour:
   m_ObjectHideFlags: 0
