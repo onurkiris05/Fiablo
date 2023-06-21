@@ -31,7 +31,7 @@ namespace RPG.Core
             _navMeshAgent.isStopped = false;
             _navMeshAgent.SetDestination(destination);
         }
-        
+
         public void MoveToTarget(Transform transform)
         {
             _actionScheduler.StartAction(this);
@@ -43,8 +43,9 @@ namespace RPG.Core
         public void Cancel()
         {
             _isMoving = false;
-            _navMeshAgent.isStopped = true;
             _target = null;
+            if (_navMeshAgent.enabled)
+                _navMeshAgent.isStopped = true;
         }
     }
 }

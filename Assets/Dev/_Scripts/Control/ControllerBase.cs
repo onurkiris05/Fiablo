@@ -17,7 +17,6 @@ namespace RPG.Control
         protected ActionScheduler _actionScheduler { get; private set; }
         protected NavMeshAgent _navMeshAgent { get; private set; }
         protected Animator _animator { get; private set; }
-        protected CapsuleCollider _capsuleCollider { get; private set; }
 
         protected virtual void Awake()
         {
@@ -28,7 +27,6 @@ namespace RPG.Control
             _actionScheduler = GetComponent<ActionScheduler>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _animator = GetComponent<Animator>();
-            _capsuleCollider = GetComponent<CapsuleCollider>();
 
             _healthHandler.Init(this);
             _combatHandler.Init(this, _actionScheduler);
@@ -44,7 +42,6 @@ namespace RPG.Control
         public virtual void ProcessDie()
         {
             _animationHandler.SetTrigger("die");
-            _capsuleCollider.enabled = false;
             _navMeshAgent.enabled = false;
         }
 

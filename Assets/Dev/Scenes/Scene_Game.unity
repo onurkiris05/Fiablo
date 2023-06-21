@@ -354,6 +354,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy Variant (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7920255495885375833, guid: 49ec3a554364d404e9d7515fc3cad645,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49ec3a554364d404e9d7515fc3cad645, type: 3}
 --- !u!4 &259386795 stripped
@@ -1570,6 +1575,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy Variant (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7920255495885375833, guid: 49ec3a554364d404e9d7515fc3cad645,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49ec3a554364d404e9d7515fc3cad645, type: 3}
