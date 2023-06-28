@@ -42,7 +42,7 @@ public class PlayerController : ControllerBase
 
     public void ProcessInputOnFingerMove(LeanFinger finger)
     {
-        if (_healthHandler.IsDead) return;
+        if (_healthHandler.IsDead) return; 
 
         _hits = GetHits(finger.ScreenPosition);
         if (_hits.Length == 0) return;
