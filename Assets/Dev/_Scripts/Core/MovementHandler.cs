@@ -1,9 +1,10 @@
+using RPG.Saving;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace RPG.Core
 {
-    public class MovementHandler : MonoBehaviour, IAction
+    public class MovementHandler : MonoBehaviour, IAction, ISaveable
     {
         private NavMeshAgent _navMeshAgent;
         private ActionScheduler _actionScheduler;
@@ -46,6 +47,15 @@ namespace RPG.Core
             _target = null;
             if (_navMeshAgent.enabled)
                 _navMeshAgent.isStopped = true;
+        }
+
+        public object CaptureState()
+        {
+            return null;
+        }
+
+        public void RestoreState(object state)
+        {
         }
     }
 }
