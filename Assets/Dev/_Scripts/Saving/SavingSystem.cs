@@ -19,10 +19,18 @@ namespace RPG.Saving
             RestoreState(LoadFile(saveFile));
         }
 
+        public void DeleteSaveFile(string saveFile)
+        {
+            var path = GetPathFromSaveFile(saveFile);
+            if (!File.Exists(path)) return;
+            
+            File.Delete(path);
+        }
+
         private void SaveFile(string saveFile, object state)
         {
             var path = GetPathFromSaveFile(saveFile);
-            
+            print("Saving to " + path);
             using (var stream = File.Open(path, FileMode.Create))
             {
                 var formatter = new BinaryFormatter();

@@ -5,7 +5,7 @@ namespace RPG.Core
     public class AnimationHandler : MonoBehaviour
     {
         private Animator _animator;
-        
+
         public void Init(Animator animator)
         {
             _animator = animator;
@@ -23,7 +23,12 @@ namespace RPG.Core
         {
             _animator.SetTrigger(triggerName);
         }
-        
+
+        public void SetImmediate(string triggerName)
+        {
+            _animator.Play(triggerName, 0, 1f);
+        }
+
         public void ResetTrigger(string triggerName)
         {
             _animator.ResetTrigger(triggerName);

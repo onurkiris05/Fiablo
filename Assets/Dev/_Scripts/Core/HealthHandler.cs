@@ -1,9 +1,10 @@
 using RPG.Control;
+using RPG.Saving;
 using UnityEngine;
 
 namespace RPG.Core
 {
-    public class HealthHandler : MonoBehaviour
+    public class HealthHandler : MonoBehaviour, ISaveable
     {
         [SerializeField] float health = 100f;
 
@@ -31,12 +32,24 @@ namespace RPG.Core
             print("Health left: " + health);
         }
 
-        private void Die()
+        private void Die(bool isImmediate = false)
         {
             _isDead = true;
-            _character.ProcessDie();
-            _character.CancelCurrentAction();
-            print("Died!!");
+            _character.ProcessDie(isImmediate);
+            print($"{gameObject.name} died!!");
+        }
+
+        public object CaptureState()
+        {
+            return health;
+        }
+
+        public void RestoreState(object state)
+        {
+            health = (float)state;
+
+            if (health <= 0f)
+                Die(true);
         }
     }
 }

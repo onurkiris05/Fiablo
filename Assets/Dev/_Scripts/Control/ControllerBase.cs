@@ -39,9 +39,14 @@ namespace RPG.Control
             _animationHandler.UpdateLocomotion(_movementHandler.GetVelocity());
         }
 
-        public virtual void ProcessDie()
+        public virtual void ProcessDie(bool isImmediate = false)
         {
-            _animationHandler.SetTrigger("die");
+            if (isImmediate)
+                _animationHandler.SetImmediate("Death");
+            else
+                _animationHandler.SetTrigger("die");
+            
+            _actionScheduler.CancelCurrentAction();
             _navMeshAgent.enabled = false;
         }
 
@@ -54,7 +59,7 @@ namespace RPG.Control
         {
             _animationHandler.ResetTrigger(triggerName);
         }
-        
+
         public virtual void CancelCurrentAction()
         {
             _actionScheduler.CancelCurrentAction();

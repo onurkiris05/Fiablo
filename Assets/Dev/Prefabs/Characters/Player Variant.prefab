@@ -85,7 +85,7 @@ PrefabInstance:
     - target: {fileID: 3359739917398918542, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: uniqueIdentifier
-      value: c4a7ad7a-cebc-41b8-8983-8f1badbf77d2
+      value: player
       objectReference: {fileID: 0}
     - target: {fileID: 3673102506063307872, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}

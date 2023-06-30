@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using RPG.Control;
 using UnityEngine;
 
@@ -7,9 +8,13 @@ namespace RPG.Core
 {
     public class AIHandler : MonoBehaviour
     {
+        [Header("Patrol Settings")]
         [SerializeField] private PatrolPath patrolPath;
         [SerializeField] float waypointTolerance = 1f;
         [SerializeField] float waypointDwellTime = 3f;
+
+        [Space(20f)] [HorizontalLine]
+        [Header("Chase Settings")]
         [SerializeField] private float chaseRadius = 5f;
         [SerializeField] float suspicionTime = 3f;
 

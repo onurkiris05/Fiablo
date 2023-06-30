@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Collections;
+using NaughtyAttributes;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,7 +11,8 @@ namespace RPG.Saving
     {
         [SerializeField, ReadOnly] string uniqueIdentifier = "";
 
-        List<ISaveable> saveables = new();
+        private static Dictionary<string, SaveableEntity> _globalLookup = new();
+        private List<ISaveable> saveables = new();
 
         private void Awake() => saveables = GetComponents<ISaveable>().ToList();
         public string GetUniqueIdentifier() => uniqueIdentifier;
@@ -48,12 +49,35 @@ namespace RPG.Saving
             var serializedObject = new SerializedObject(this);
             var property = serializedObject.FindProperty("uniqueIdentifier");
 
-            if (string.IsNullOrEmpty(property.stringValue))
+            if (string.IsNullOrEmpty(property.stringValue) || !IsUnique(property.stringValue))
             {
                 property.stringValue = System.Guid.NewGuid().ToString();
                 serializedObject.ApplyModifiedProperties();
             }
+            
+            _globalLookup[property.stringValue] = this;
         }
 #endif
+        
+        private bool IsUnique(string canditate)
+        {
+            if(!_globalLookup.ContainsKey(canditate)) return true;
+
+            if (_globalLookup[canditate] == this) return true;
+
+            if (_globalLookup[canditate] == null)
+            {
+                _globalLookup.Remove(canditate);
+                return true;
+            }
+
+            if (_globalLookup[canditate].GetUniqueIdentifier() != canditate)
+            {
+                _globalLookup.Remove(canditate);
+                return true;
+            }
+
+            return false;
+        }
     }
 }

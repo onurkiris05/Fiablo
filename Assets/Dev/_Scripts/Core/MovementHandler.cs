@@ -51,11 +51,13 @@ namespace RPG.Core
 
         public object CaptureState()
         {
-            return null;
+            return new SerializableVector3(transform.position);
         }
 
         public void RestoreState(object state)
         {
+            var position = (SerializableVector3)state;
+            _navMeshAgent.Warp(position.ToVector3());
         }
     }
 }
