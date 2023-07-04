@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,7 +9,7 @@ namespace RPG.Saving
 {
     public class SavingSystem : MonoBehaviour
     {
-        private const string extension = ".json";
+        [SerializeField] private SavingStrategy strategy;
 
         public IEnumerator LoadLastScene(string saveFile)
         {
@@ -52,7 +51,7 @@ namespace RPG.Saving
         {
             foreach (string path in Directory.EnumerateFiles(Application.persistentDataPath))
             {
-                if (Path.GetExtension(path) == extension)
+                if (Path.GetExtension(path) == strategy.GetExtension())
                 {
                     yield return Path.GetFileNameWithoutExtension(path);
                 }
@@ -62,31 +61,12 @@ namespace RPG.Saving
         // PRIVATE
         private void SaveFileAsJSon(string saveFile, JObject state)
         {
-            var path = GetPathFromSaveFile(saveFile);
-            print("Saving to " + path);
-            using (var textWriter = File.CreateText(path))
-            {
-                using (var writer = new JsonTextWriter(textWriter))
-                {
-                    writer.Formatting = Formatting.Indented;
-                    state.WriteTo(writer);
-                }
-            }
+            strategy.SaveToFile(saveFile, state);
         }
 
         private JObject LoadJsonFromFile(string saveFile)
         {
-            var path = GetPathFromSaveFile(saveFile);
-            if (!File.Exists(path)) return new JObject();
-
-            using (var textReader = File.OpenText(path))
-            {
-                using (var reader = new JsonTextReader(textReader))
-                {
-                    reader.FloatParseHandling = FloatParseHandling.Double;
-                    return JObject.Load(reader);
-                }
-            }
+            return strategy.LoadFromFile(saveFile);
         }
 
         private void CaptureAsToken(JObject state)
@@ -100,7 +80,6 @@ namespace RPG.Saving
             stateDict["lastSceneBuildIndex"] = SceneManager.GetActiveScene().buildIndex;
         }
 
-
         private void RestoreFromToken(JObject state)
         {
             IDictionary<string, JToken> stateDict = state;
@@ -112,10 +91,9 @@ namespace RPG.Saving
             }
         }
 
-
         private string GetPathFromSaveFile(string saveFile)
         {
-            return Path.Combine(Application.persistentDataPath, saveFile + extension);
+            return strategy.GetPathFromSaveFile(saveFile);
         }
     }
 }
