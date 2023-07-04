@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace RPG.Core
 {
-    public class MovementHandler : MonoBehaviour, IAction, IJsonSaveable
+    public class MovementHandler : MonoBehaviour, IAction, ISaveable
     {
         private NavMeshAgent _navMeshAgent;
         private ActionScheduler _actionScheduler;

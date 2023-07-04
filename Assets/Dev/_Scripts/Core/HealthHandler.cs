@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace RPG.Core
 {
-    public class HealthHandler : MonoBehaviour, IJsonSaveable
+    public class HealthHandler : MonoBehaviour, ISaveable
     {
         [SerializeField] float health = 100f;
 
