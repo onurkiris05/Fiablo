@@ -30,6 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3452012378622213122}
+  - {fileID: 2082793686054777863}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -45,6 +46,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 755b4f6d9e9af04479cf13336b9ed1a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1607129228136567602
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2082793686054777863}
+  - component: {fileID: 2247855495501351194}
+  - component: {fileID: 9077619525649327587}
+  m_Layer: 0
+  m_Name: SavingSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2082793686054777863
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607129228136567602}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6466698047343330599}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2247855495501351194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607129228136567602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e35201c2f965ac44eba0dc52467bc5be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9077619525649327587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607129228136567602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 408a7826cdad3eb49ad28b39e321c65f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  savingSystem: {fileID: 2247855495501351194}
 --- !u!1 &8508045546969906602
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,7 +116,7 @@ GameObject:
   - component: {fileID: 7477236233137756803}
   - component: {fileID: 489549315511021941}
   m_Layer: 0
-  m_Name: SavingSystem
+  m_Name: OldSavingSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

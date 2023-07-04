@@ -1,10 +1,11 @@
+using Newtonsoft.Json.Linq;
 using RPG.Saving;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace RPG.Core
 {
-    public class MovementHandler : MonoBehaviour, IAction, ISaveable
+    public class MovementHandler : MonoBehaviour, IAction, IJsonSaveable
     {
         private NavMeshAgent _navMeshAgent;
         private ActionScheduler _actionScheduler;
@@ -49,15 +50,16 @@ namespace RPG.Core
                 _navMeshAgent.isStopped = true;
         }
 
-        public object CaptureState()
+        public JToken CaptureAsJToken()
         {
-            return new SerializableVector3(transform.position);
+            return transform.position.ToToken();
         }
 
-        public void RestoreState(object state)
+        public void RestoreFromJToken(JToken state)
         {
-            var position = (SerializableVector3)state;
-            _navMeshAgent.Warp(position.ToVector3());
+            var position = state.ToVector3();
+            _navMeshAgent.Warp(position);
+            _actionScheduler.CancelCurrentAction();
         }
     }
 }
