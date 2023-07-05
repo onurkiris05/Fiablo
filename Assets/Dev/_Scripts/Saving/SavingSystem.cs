@@ -9,7 +9,7 @@ namespace RPG.Saving
 {
     public class SavingSystem : MonoBehaviour
     {
-        [SerializeField] private SavingStrategy strategy;
+        [SerializeField] SavingStrategy strategy;
 
         public IEnumerator LoadLastScene(string saveFile)
         {
@@ -58,7 +58,6 @@ namespace RPG.Saving
             }
         }
 
-        // PRIVATE
         private void SaveFileAsJSon(string saveFile, JObject state)
         {
             strategy.SaveToFile(saveFile, state);
@@ -72,9 +71,9 @@ namespace RPG.Saving
         private void CaptureAsToken(JObject state)
         {
             IDictionary<string, JToken> stateDict = state;
-            foreach (var saveable in FindObjectsOfType<SaveableEntity>())
+            foreach (var saveable in SavingWrapper.SaveableEntities)
             {
-                stateDict[saveable.GetUniqueIdentifier()] = saveable.CaptureAsJtoken();
+                stateDict[saveable.GetUniqueIdentifier()] = saveable.CaptureAsJToken();
             }
 
             stateDict["lastSceneBuildIndex"] = SceneManager.GetActiveScene().buildIndex;
@@ -83,7 +82,7 @@ namespace RPG.Saving
         private void RestoreFromToken(JObject state)
         {
             IDictionary<string, JToken> stateDict = state;
-            foreach (var saveable in FindObjectsOfType<SaveableEntity>())
+            foreach (var saveable in SavingWrapper.SaveableEntities)
             {
                 var id = saveable.GetUniqueIdentifier();
                 if (stateDict.ContainsKey(id))

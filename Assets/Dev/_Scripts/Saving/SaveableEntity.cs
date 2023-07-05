@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
@@ -12,25 +13,28 @@ namespace RPG.Saving
     {
         [SerializeField, ReadOnly] string uniqueIdentifier = "";
 
-        // CACHED STATE
         private static Dictionary<string, SaveableEntity> _globalLookup = new();
         private List<ISaveable> saveables = new();
 
+        private void Awake()
+        {
+            saveables = GetComponents<ISaveable>().ToList();
+            SavingWrapper.SaveableEntities.Add(this);
+        }
 
-        private void Awake() => saveables = GetComponents<ISaveable>().ToList();
         public string GetUniqueIdentifier() => uniqueIdentifier;
 
-        public JToken CaptureAsJtoken()
+        public JToken CaptureAsJToken()
         {
             var state = new JObject();
             IDictionary<string, JToken> stateDict = state;
-            
+
             foreach (var saveable in saveables)
             {
                 var token = saveable.CaptureAsJToken();
                 var component = saveable.GetType().ToString();
                 stateDict[component] = token;
-                Debug.Log($"{name} Capture {component} = {token}");
+                print($"{name} Capture {component} = {token}");
             }
 
             return state;
@@ -40,41 +44,50 @@ namespace RPG.Saving
         {
             var state = s.ToObject<JObject>();
             IDictionary<string, JToken> stateDict = state;
-            
+
             foreach (var saveable in saveables)
             {
                 var component = saveable.GetType().ToString();
                 if (stateDict.ContainsKey(component))
                 {
                     saveable.RestoreFromJToken(stateDict[component]);
-                    Debug.Log($"{name} Restore {component} =>{stateDict[component]}");
+                    print($"{name} Restore {component} =>{stateDict[component]}");
                 }
             }
         }
 
 #if UNITY_EDITOR
+
         private void Update()
         {
-            if (Application.IsPlaying(gameObject)) return;
-            if (string.IsNullOrEmpty(gameObject.scene.path)) return;
+            if (Application.IsPlaying(gameObject)) return; // If game is playing
+            if (string.IsNullOrEmpty(gameObject.scene.path)) return; // If in prefab scene
 
             var serializedObject = new SerializedObject(this);
             var property = serializedObject.FindProperty("uniqueIdentifier");
 
-            if (string.IsNullOrEmpty(property.stringValue) || !IsUnique(property.stringValue))
+            if (!IsValid(property.stringValue))
             {
-                property.stringValue = System.Guid.NewGuid().ToString();
+                property.stringValue = Guid.NewGuid().ToString();
                 serializedObject.ApplyModifiedProperties();
             }
 
             _globalLookup[property.stringValue] = this;
         }
+
 #endif
+
+        private bool IsValid(string candidate)
+        {
+            if (string.IsNullOrEmpty(candidate) || !IsUnique(candidate))
+                return false;
+
+            return true;
+        }
 
         private bool IsUnique(string candidate)
         {
             if (!_globalLookup.ContainsKey(candidate)) return true;
-
             if (_globalLookup[candidate] == this) return true;
 
             if (_globalLookup[candidate] == null)

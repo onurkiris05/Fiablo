@@ -7,7 +7,6 @@ namespace RPG.Saving
     public abstract class SavingStrategy : ScriptableObject
     {
         public abstract void SaveToFile(string saveFile, JObject State);
-
         public abstract JObject LoadFromFile(string saveFile);
         public abstract string GetExtension();
 

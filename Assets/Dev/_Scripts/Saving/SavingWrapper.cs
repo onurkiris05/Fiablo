@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,12 +9,11 @@ namespace RPG.Saving
     {
         [SerializeField] SavingSystem savingSystem;
 
+        public static List<SaveableEntity> SaveableEntities = new();
+
         private const string _defaultSaveFile = "save";
 
-        private void Start()
-        {
-            savingSystem.Load(_defaultSaveFile);
-        }
+        private void Start() => savingSystem.Load(_defaultSaveFile);
 
         private void Update()
         {
