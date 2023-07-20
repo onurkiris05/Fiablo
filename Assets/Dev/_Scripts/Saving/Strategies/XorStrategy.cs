@@ -13,7 +13,7 @@ namespace RPG.Saving
         [InfoBox("Use below button to generate a random key. " +
                  "Once you've set this key, don't touch the field again. " +
                  "It's as secure as it's going to get, and the key MUST match" +
-                 " a saved file to use the saved file again!", EInfoBoxType.Warning)]
+                 " with saved file to use the saved file again!", EInfoBoxType.Warning)]
         
         [SerializeField] string key = "TwelveTwinsTwirledTwelveTwigs";
 

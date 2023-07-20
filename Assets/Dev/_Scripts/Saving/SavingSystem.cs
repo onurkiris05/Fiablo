@@ -42,6 +42,7 @@ namespace RPG.Saving
         {
             var path = GetPathFromSaveFile(saveFile);
             if (!File.Exists(path)) return;
+            print($"Path: {path}");
 
             print($"Save file: {saveFile} deleted");
             File.Delete(path);

@@ -1,27 +1,16 @@
-using RPG.Core;
+using RPG.BehaviourTree;
 using RPG.Control;
-using UnityEngine;
 
-    public class EnemyController : ControllerBase
+public class EnemyController : ControllerBase
+{
+    private EnemyPatrolBT _enemyPatrolBt;
+
+    protected override void Awake()
     {
-        private AIHandler _aiHandler;
+        base.Awake();
 
-        protected override void Awake()
-        {
-            base.Awake();
-            
-            _aiHandler = GetComponent<AIHandler>();
-            _aiHandler.Init(this);
-        }
-
-        public void ProcessAttack(HealthHandler target)
-        {
-            _combatHandler.Attack(target);
-            _movementHandler.MoveToTarget(target.transform);
-        }
-
-        public void ProcessMove(Vector3 target)
-        {
-            _movementHandler.MoveToDestination(target);
-        }
+        _enemyPatrolBt = GetComponent<EnemyPatrolBT>();
+        _enemyPatrolBt.Init(this);
     }
+    
+}

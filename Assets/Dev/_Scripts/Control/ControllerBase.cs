@@ -7,9 +7,6 @@ namespace RPG.Control
 {
     public abstract class ControllerBase : MonoBehaviour
     {
-        public bool IsDead() => _healthHandler.IsDead;
-        public bool IsAttacking => _combatHandler.IsAttacking;
-
         protected MovementHandler _movementHandler { get; private set; }
         protected AnimationHandler _animationHandler { get; private set; }
         protected CombatHandler _combatHandler { get; private set; }
@@ -17,6 +14,9 @@ namespace RPG.Control
         protected ActionScheduler _actionScheduler { get; private set; }
         protected NavMeshAgent _navMeshAgent { get; private set; }
         protected Animator _animator { get; private set; }
+        
+        public bool IsDead => _healthHandler.IsDead;
+        public float GetAttackRange => _combatHandler.WeaponRange;
 
         protected virtual void Awake()
         {
@@ -63,6 +63,16 @@ namespace RPG.Control
         public virtual void CancelCurrentAction()
         {
             _actionScheduler.CancelCurrentAction();
+        }
+        
+        public void ProcessMove(Vector3 target)
+        {
+            _movementHandler.MoveToDestination(target);
+        }
+        
+        public void ProcessAttack(HealthHandler target)
+        {
+            _combatHandler.Attack(target);
         }
     }
 }

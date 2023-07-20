@@ -1,4 +1,5 @@
 using Lean.Touch;
+using RPG.BehaviourTree;
 using UnityEngine;
 using RPG.Core;
 using RPG.Control;
@@ -9,7 +10,11 @@ public class PlayerController : ControllerBase
     [SerializeField] private LayerMask movementLayer;
     [SerializeField] private LayerMask targetLayer;
 
+    public Transform Target => _target;
+
     private InputHandler _inputHandler;
+    private PlayerAttackBT _playerAttackBt;
+    private Transform _target;
     private RaycastHit[] _hits;
     private Ray _ray;
 
@@ -18,7 +23,9 @@ public class PlayerController : ControllerBase
         base.Awake();
 
         _inputHandler = GetComponent<InputHandler>();
+        _playerAttackBt = GetComponent<PlayerAttackBT>();
         _inputHandler.Init(this);
+        _playerAttackBt.Init(this);
     }
 
     public void ProcessInputOnFingerDown(LeanFinger finger)
@@ -27,7 +34,7 @@ public class PlayerController : ControllerBase
 
         _hits = GetHits(finger.ScreenPosition);
         if (_hits.Length == 0) return;
-        
+
         foreach (var hit in _hits)
         {
             // Process attack if ray hit to a target
@@ -42,11 +49,11 @@ public class PlayerController : ControllerBase
 
     public void ProcessInputOnFingerMove(LeanFinger finger)
     {
-        if (_healthHandler.IsDead) return; 
+        if (_healthHandler.IsDead) return;
 
         _hits = GetHits(finger.ScreenPosition);
         if (_hits.Length == 0) return;
-        
+
         foreach (var hit in _hits)
         {
             // Process movement if ray hit to terrain
@@ -65,11 +72,11 @@ public class PlayerController : ControllerBase
         if (hit.transform.gameObject.layer == targetLayer.LayerToInt() &&
             hit.transform.TryGetComponent(out HealthHandler target))
         {
-            _combatHandler.Attack(target);
-            _movementHandler.MoveToTarget(target.transform);
+            _target = target.transform;
             return true;
         }
 
+        _target = null;
         return false;
     }
 
@@ -77,8 +84,8 @@ public class PlayerController : ControllerBase
     {
         if (hit.transform.gameObject.layer == movementLayer.LayerToInt())
         {
-            _combatHandler.Cancel();
-            _movementHandler.MoveToDestination(hit.point);
+            _target = null;
+            ProcessMove(hit.point);
         }
     }
 }

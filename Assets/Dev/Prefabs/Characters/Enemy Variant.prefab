@@ -7,6 +7,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5417810734430262183, guid: d2559db2e60b6a84ba401b869d169af0,
+        type: 3}
+      propertyPath: health
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: m_RootOrder
@@ -15,7 +20,7 @@ PrefabInstance:
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17.03
+      value: -22.55
       objectReference: {fileID: 0}
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
@@ -25,7 +30,7 @@ PrefabInstance:
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.7
+      value: 3.32
       objectReference: {fileID: 0}
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
@@ -97,6 +102,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 8119851646430419974, guid: d2559db2e60b6a84ba401b869d169af0,
+        type: 3}
+      propertyPath: uniqueIdentifier
+      value: a49eefdb-3d06-4622-88a7-aa90f3e10690
+      objectReference: {fileID: 0}
     - target: {fileID: 8515759653100310667, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: m_Radius
@@ -121,7 +131,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6850851540275916089}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2829436552917073277
+--- !u!114 &603251833
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,14 +140,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7920255495885375833}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f83b69ae33a99e43aef60b0e73d4798, type: 3}
+  m_Script: {fileID: 11500000, guid: e1a3217db12d8d64896c582b8e9c995b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patrolPath: {fileID: 0}
-  waypointTolerance: 1
-  waypointDwellTime: 3
-  chaseRadius: 5
-  suspicionTime: 4
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  fovRange: 5
+  suspiciousTime: 5
+  path: {fileID: 0}
+  dwellTime: 3
 --- !u!114 &7647476961805948933
 MonoBehaviour:
   m_ObjectHideFlags: 0
