@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1493261277495397112
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3980885734503569011}
+  m_Layer: 8
+  m_Name: WeaponHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3980885734503569011
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493261277495397112}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8023944302432851915}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6484223207745616012
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10,7 +41,7 @@ PrefabInstance:
     - target: {fileID: -5417810734430262183, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: health
-      value: 50
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
@@ -20,7 +51,7 @@ PrefabInstance:
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.95
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
@@ -30,7 +61,7 @@ PrefabInstance:
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.25
+      value: -8.63
       objectReference: {fileID: 0}
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
@@ -124,6 +155,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8561802478180988505, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: bdaa805bb33dde84c9ef5a641aec9c6d,
+        type: 2}
+    - target: {fileID: 8561802478180988505, guid: d2559db2e60b6a84ba401b869d169af0,
+        type: 3}
       propertyPath: weaponRange
       value: 2
       objectReference: {fileID: 0}
@@ -132,6 +169,29 @@ PrefabInstance:
       propertyPath: weaponDamage
       value: 26
       objectReference: {fileID: 0}
+    - target: {fileID: 8561802478180988505, guid: d2559db2e60b6a84ba401b869d169af0,
+        type: 3}
+      propertyPath: weaponParent
+      value: 
+      objectReference: {fileID: 3980885734503569011}
+    - target: {fileID: 8561802478180988505, guid: d2559db2e60b6a84ba401b869d169af0,
+        type: 3}
+      propertyPath: weaponPrefab
+      value: 
+      objectReference: {fileID: 6451275023191830377, guid: c8a30a48cad6b3544aa44e2f7cc6d2af,
+        type: 3}
+    - target: {fileID: 8561802478180988505, guid: d2559db2e60b6a84ba401b869d169af0,
+        type: 3}
+      propertyPath: defaultWeapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 7eab11150b972284cb6b7c8cd97d9c03,
+        type: 2}
+    - target: {fileID: 8561802478180988505, guid: d2559db2e60b6a84ba401b869d169af0,
+        type: 3}
+      propertyPath: weaponOverrideController
+      value: 
+      objectReference: {fileID: 22100000, guid: 664d00cd9f64a2445a5d9f9a109acf08,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2559db2e60b6a84ba401b869d169af0, type: 3}
 --- !u!4 &7416714303589627290 stripped
@@ -146,6 +206,21 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6484223207745616012}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1498692227555313151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7711831499368389868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb5f4931e09dd354e901e87aa5cc42be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &2349371974121305912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,6 +234,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fingerMoveTolerance: 30
+--- !u!114 &2562879932211380687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7711831499368389868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dc8f8ee8eb115b49a7cd0c3a8b0ab6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4620252121969463996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,21 +261,6 @@ MonoBehaviour:
   movementLayer:
     serializedVersion: 2
     m_Bits: 64
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 128
---- !u!114 &1498692227555313151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7711831499368389868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb5f4931e09dd354e901e87aa5cc42be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -596,3 +668,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: b749cf2130622c649955c42b55b32e65, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b749cf2130622c649955c42b55b32e65, type: 3}
+--- !u!4 &8023944302432851915 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: b749cf2130622c649955c42b55b32e65,
+    type: 3}
+  m_PrefabInstance: {fileID: 8570185296705775619}
+  m_PrefabAsset: {fileID: 0}

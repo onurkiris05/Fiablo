@@ -1,3 +1,4 @@
+using RPG.Control;
 using UnityEngine;
 
 namespace RPG.BehaviourTree
@@ -6,16 +7,16 @@ namespace RPG.BehaviourTree
     {
         private LayerMask _targetMask;
         private Transform _transform;
-        private float _attackRange;
+        private ControllerBase _character;
 
         public CheckTargetInAttackRange(
             LayerMask targetMask,
             Transform transform,
-            float attackRange)
+            ControllerBase character)
         {
             _targetMask = targetMask;
             _transform = transform;
-            _attackRange = attackRange;
+            _character = character;
         }
 
         public override NodeState Evaluate()
@@ -26,7 +27,7 @@ namespace RPG.BehaviourTree
             if (target != null)
             {
                 // Check if there is any target in attack range
-                Collider[] colliders = Physics.OverlapSphere(_transform.position, _attackRange, _targetMask);
+                Collider[] colliders = Physics.OverlapSphere(_transform.position, _character.WeaponRange, _targetMask);
                 if (colliders.Length > 0)
                 {
                     _state = NodeState.SUCCESS;

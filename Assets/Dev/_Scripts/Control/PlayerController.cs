@@ -1,5 +1,6 @@
 using Lean.Touch;
 using RPG.BehaviourTree;
+using RPG.Combat;
 using UnityEngine;
 using RPG.Core;
 using RPG.Control;
@@ -13,6 +14,7 @@ public class PlayerController : ControllerBase
     public Transform Target => _target;
 
     private InputHandler _inputHandler;
+    private PickupHandler _pickupHandler;
     private PlayerAttackBT _playerAttackBt;
     private Transform _target;
     private RaycastHit[] _hits;
@@ -22,10 +24,17 @@ public class PlayerController : ControllerBase
     {
         base.Awake();
 
+        _pickupHandler = GetComponent<PickupHandler>();
         _inputHandler = GetComponent<InputHandler>();
         _playerAttackBt = GetComponent<PlayerAttackBT>();
+        _pickupHandler.Init(this);
         _inputHandler.Init(this);
         _playerAttackBt.Init(this);
+    }
+
+    public void EquipWeapon(Weapon weapon)
+    {
+        _combatHandler.EquipWeapon(weapon);
     }
 
     public void ProcessInputOnFingerDown(LeanFinger finger)

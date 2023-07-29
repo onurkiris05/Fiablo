@@ -1,28 +1,45 @@
 using System.Collections;
+using Newtonsoft.Json.Linq;
 using RPG.Control;
 using RPG.Core;
+using RPG.Saving;
 using UnityEngine;
 
 namespace RPG.Combat
 {
-    public class CombatHandler : MonoBehaviour, IAction
+    public class CombatHandler : MonoBehaviour, IAction, ISaveable
     {
-        [SerializeField] private float weaponDamage = 15f;
-        [SerializeField] private float weaponRange = 2f;
-        [SerializeField] private float timeBetweenAttacks = 1f;
+        [SerializeField] private Transform weaponParent;
+        [SerializeField] private Weapon defaultWeapon;
+        // [SerializeField] string defaultWeaponName = "Sword";
 
-        public float WeaponRange => weaponRange;
+        public float WeaponRange => _currentWeapon.Range;
 
         private ControllerBase _character;
         private ActionScheduler _actionScheduler;
         private HealthHandler _target;
+        private Weapon _currentWeapon;
         private Coroutine _attackCoroutine;
         private bool _isTriggered;
-        
+
+        private void OnEnable()
+        {
+            EquipWeapon(defaultWeapon);
+        }
+
         public void Init(ControllerBase character, ActionScheduler scheduler)
         {
             _character = character;
             _actionScheduler = scheduler;
+        }
+
+        public void EquipWeapon(Weapon weapon)
+        {
+            if (_currentWeapon != null)
+                weaponParent.DestroyChildren();
+
+            _currentWeapon = weapon;
+            weapon.Init(weaponParent, _character);
         }
 
         public void Attack(HealthHandler target)
@@ -61,15 +78,38 @@ namespace RPG.Combat
                 transform.LookAt(_target.transform);
                 _character.ProcessResetTrigger("stopAttack");
                 _character.ProcessSetTrigger("attack");
-                // This will trigger Hit() event in "attack" animation.
-                yield return Helpers.BetterWaitForSeconds(timeBetweenAttacks);
+                // This will trigger Hit() or Shoot() event in "attack" animation.
+                yield return Helpers.BetterWaitForSeconds(_currentWeapon.TimeBetweenAttacks);
             }
         }
 
+        // Method is called in melee attack animations as Event!
         private void Hit()
         {
             if (_target == null) return;
-            _target.TakeDamage(weaponDamage);
+
+            _target.TakeDamage(_currentWeapon.Damage);
+        }
+
+        // Method is called in ranged attack animations as Event!
+        private void Shoot()
+        {
+            if (_target == null) return;
+
+            Projectile projectile = Instantiate(_currentWeapon.Projectile, weaponParent.position, Quaternion.identity);
+            projectile.Init(_target, _currentWeapon.Damage);
+        }
+
+        public JToken CaptureAsJToken()
+        {
+            return JToken.FromObject(_currentWeapon.name);
+        }
+
+        public void RestoreFromJToken(JToken state)
+        {
+            var weaponName = state.ToObject<string>();
+            Weapon weapon = Resources.Load<Weapon>(weaponName);
+            EquipWeapon(weapon);
         }
     }
 }

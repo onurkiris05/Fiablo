@@ -33,5 +33,10 @@ namespace RPG.Core
         {
             _animator.ResetTrigger(triggerName);
         }
+        
+        public void SetAnimator(AnimatorOverrideController animatorOverrideController)
+        {
+            _animator.runtimeAnimatorController = animatorOverrideController;
+        }
     }
 }

@@ -5,10 +5,9 @@ namespace RPG.BehaviourTree
     [System.Serializable]
     public abstract class Node
     {
-        protected NodeState _state;
-        public NodeState State => _state;
-
         public Node parent;
+        
+        protected NodeState _state;
         protected List<Node> _children = new();
 
         private Dictionary<string, object> _dataContext = new();

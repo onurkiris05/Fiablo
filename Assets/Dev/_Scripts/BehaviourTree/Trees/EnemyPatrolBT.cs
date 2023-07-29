@@ -24,7 +24,7 @@ namespace RPG.BehaviourTree
             var checkIsDead = new CheckIsDead(_controller);
             var taskAttack = new TaskAttack(_controller);
             var checkEnemyInAttackRange = new CheckTargetInAttackRange(
-                targetLayer, transform, _controller.GetAttackRange);
+                targetLayer, transform, _controller);
             var checkEnemyInFovRange = new CheckTargetInFOVRange(targetLayer, transform, fovRange);
             var taskToGoTarget = new TaskGoToPlayer(_controller, transform, suspiciousTime);
             var taskPatrol = new TaskPatrol(_controller, path, dwellTime);

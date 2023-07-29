@@ -5,6 +5,7 @@ using UnityEngine;
 public static class Helpers
 {
     private static readonly Dictionary<float, WaitForSeconds> WaitDictionary = new();
+
     public static WaitForSeconds BetterWaitForSeconds(float seconds)
     {
         // Check if WaitForSeconds instance for the specified seconds exists in the dictionary
@@ -16,7 +17,17 @@ public static class Helpers
 
         return wait;
     }
-    
+
+    public static void DestroyChildren(this Transform t)
+    {
+        foreach (Transform child in t) Object.Destroy(child.gameObject);
+    }
+
+    public static void SetChildrenActiveState(this Transform t, bool state)
+    {
+        foreach (Transform child in t) child.gameObject.SetActive(state);
+    }
+
     public static int LayerToInt(this LayerMask mask)
     {
         return Mathf.RoundToInt(Mathf.Log(mask.value, 2));
@@ -31,7 +42,7 @@ public static class Helpers
     {
         return value * value;
     }
-    
+
     public static JToken ToToken(this Vector3 vector)
     {
         JObject state = new JObject();
@@ -64,7 +75,7 @@ public static class Helpers
                 vector.z = z.ToObject<float>();
             }
         }
+
         return vector;
     }
-
 }

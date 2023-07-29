@@ -16,7 +16,7 @@ namespace RPG.Control
         protected Animator _animator { get; private set; }
         
         public bool IsDead => _healthHandler.IsDead;
-        public float GetAttackRange => _combatHandler.WeaponRange;
+        public float WeaponRange => _combatHandler.WeaponRange;
 
         protected virtual void Awake()
         {
@@ -73,6 +73,11 @@ namespace RPG.Control
         public void ProcessAttack(HealthHandler target)
         {
             _combatHandler.Attack(target);
+        }
+        
+        public void SetAnimator(AnimatorOverrideController animatorOverrideController)
+        {
+            _animationHandler.SetAnimator(animatorOverrideController);
         }
     }
 }

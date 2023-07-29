@@ -7,21 +7,21 @@ namespace RPG.BehaviourTree
     {
         [SerializeField] private LayerMask targetLayer;
 
-        private PlayerController _controller;
+        private PlayerController _player;
 
-        public void Init(PlayerController controller)
+        public void Init(PlayerController player)
         {
-            _controller = controller;
+            _player = player;
         }
 
         protected override Node SetupTree()
         {
-            var checkIsDead = new CheckIsDead(_controller);
-            var checkIsSafe = new CheckIsSafe(_controller);
+            var checkIsDead = new CheckIsDead(_player);
+            var checkIsSafe = new CheckIsSafe(_player);
             var checkIsTargetInRange = new CheckTargetInAttackRange(
-                targetLayer, transform, _controller.GetAttackRange);
-            var taskAttack = new TaskAttack(_controller);
-            var taskGoToEnemy = new TaskGoToEnemy(_controller, transform);
+                targetLayer, transform, _player);
+            var taskAttack = new TaskAttack(_player);
+            var taskGoToEnemy = new TaskGoToEnemy(_player, transform);
 
             Sequence isTargetInRangeSequence = new Sequence(new List<Node>
             {

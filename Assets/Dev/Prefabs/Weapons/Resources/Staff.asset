@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b15791490572da840875e82688edf532, type: 3}
+  m_Name: Staff
+  m_EditorClassIdentifier: 
+  weaponPrefab: {fileID: 6277791047108159276, guid: 9b47bbd97ef36ca40bd89db6a9b049d3,
+    type: 3}
+  projectile: {fileID: 5407929778131674528, guid: b1b4feab887a44c4fa9c8c81984dea25,
+    type: 3}
+  animatorOverride: {fileID: 22100000, guid: 10c7e257cc5039941a852481dcbaed42, type: 2}
+  weaponDamage: 30
+  weaponRange: 15
+  timeBetweenAttacks: 1.5
