@@ -1,3 +1,4 @@
+using System;
 using Lean.Touch;
 using RPG.BehaviourTree;
 using RPG.Combat;
@@ -11,10 +12,13 @@ public class PlayerController : ControllerBase
     [SerializeField] private LayerMask movementLayer;
     [SerializeField] private LayerMask targetLayer;
 
+    public event Action OnLevelUp;
+
     public Transform Target => _target;
 
     private InputHandler _inputHandler;
     private PickupHandler _pickupHandler;
+    private ExperienceHandler _experienceHandler;
     private PlayerAttackBT _playerAttackBt;
     private Transform _target;
     private RaycastHit[] _hits;
@@ -24,18 +28,33 @@ public class PlayerController : ControllerBase
     {
         base.Awake();
 
-        _pickupHandler = GetComponent<PickupHandler>();
         _inputHandler = GetComponent<InputHandler>();
+        _pickupHandler = GetComponent<PickupHandler>();
+        _experienceHandler = GetComponent<ExperienceHandler>();
         _playerAttackBt = GetComponent<PlayerAttackBT>();
-        _pickupHandler.Init(this);
+
+        _baseStats.Init(this);
         _inputHandler.Init(this);
+        _pickupHandler.Init(this);
         _playerAttackBt.Init(this);
+        _experienceHandler.Init(this);
     }
 
-    public void EquipWeapon(Weapon weapon)
+    private void OnEnable()
     {
-        _combatHandler.EquipWeapon(weapon);
+        OnLevelUp += _healthHandler.SetHealth;
     }
+
+    private void OnDisable()
+    {
+        OnLevelUp -= _healthHandler.SetHealth;
+    }
+
+    public void InvokeOnLevelUp() => OnLevelUp?.Invoke();
+
+    public void EquipWeapon(Weapon weapon) => _combatHandler.EquipWeapon(weapon);
+
+    public int GetLevel() => _experienceHandler.Level;
 
     public void ProcessInputOnFingerDown(LeanFinger finger)
     {
@@ -82,6 +101,7 @@ public class PlayerController : ControllerBase
             hit.transform.TryGetComponent(out HealthHandler target))
         {
             _target = target.transform;
+            target.SetInstigator(_experienceHandler);
             return true;
         }
 

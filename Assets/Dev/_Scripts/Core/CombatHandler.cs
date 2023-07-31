@@ -2,6 +2,7 @@ using System.Collections;
 using Newtonsoft.Json.Linq;
 using RPG.Control;
 using RPG.Core;
+using RPG.Interfaces;
 using RPG.Saving;
 using UnityEngine;
 
@@ -11,7 +12,6 @@ namespace RPG.Combat
     {
         [SerializeField] private Transform weaponParent;
         [SerializeField] private Weapon defaultWeapon;
-        // [SerializeField] string defaultWeaponName = "Sword";
 
         public float WeaponRange => _currentWeapon.Range;
 

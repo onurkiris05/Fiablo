@@ -41,7 +41,12 @@ PrefabInstance:
     - target: {fileID: -5417810734430262183, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: health
-      value: 1000
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: -5417810734430262183, guid: d2559db2e60b6a84ba401b869d169af0,
+        type: 3}
+      propertyPath: isPlayer
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 782688010922174889, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
@@ -126,7 +131,7 @@ PrefabInstance:
     - target: {fileID: 3673102506063307872, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
       propertyPath: m_Name
-      value: Player Variant
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 3673102506063307872, guid: d2559db2e60b6a84ba401b869d169af0,
         type: 3}
@@ -206,6 +211,21 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6484223207745616012}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1022908538475983186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7711831499368389868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d6ef771e1646cc4f97a35741fbdc335, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progression: {fileID: 11400000, guid: afae165c15d97d7429c7a9f7adc46320, type: 2}
+  experience: 0
+  level: 1
 --- !u!114 &1498692227555313151
 MonoBehaviour:
   m_ObjectHideFlags: 0

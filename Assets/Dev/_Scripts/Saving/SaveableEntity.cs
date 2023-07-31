@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
 using Newtonsoft.Json.Linq;
+using RPG.Interfaces;
 using UnityEditor;
 using UnityEngine;
 

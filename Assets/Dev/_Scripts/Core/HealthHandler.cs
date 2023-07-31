@@ -1,37 +1,67 @@
 using RPG.Control;
-using RPG.Saving;
 using UnityEngine;
 using Newtonsoft.Json.Linq;
+using RPG.Interfaces;
+using Zenject;
 
 namespace RPG.Core
 {
     public class HealthHandler : MonoBehaviour, ISaveable
     {
-        [SerializeField] float health = 100f;
+        [Inject] private IUIManager uiManager;
+        [SerializeField] private float health;
+        [SerializeField] private bool isPlayer;
 
         public bool IsDead => _isDead;
 
+        private ExperienceHandler _instigator;
         private ControllerBase _character;
         private bool _isDead;
+        private bool _isLoaded;
 
-        public void Init(ControllerBase character)
+        #region ENCAPSULATIONS
+
+        private float _health
         {
-            _character = character;
+            get { return health; }
+            set
+            {
+                health = value;
+                if (isPlayer)
+                {
+                    var percent = (_health / _character.GetHealth()) * 100f;
+                    uiManager.OnHealthChanged(percent);
+                }
+            }
         }
+
+        #endregion
+
+        private void Start()
+        {
+            if (!_isLoaded)
+                SetHealth();
+        }
+
+        public void Init(ControllerBase character) => _character = character;
+
+        public void SetHealth() => _health = _character.GetHealth();
 
         public void TakeDamage(float damage)
         {
             if (_isDead) return;
 
-            health = Mathf.Max(health - damage, 0);
-            if (health <= 0f)
-            {
-                Die();
-                return;
-            }
+            _health = Mathf.Max(_health - damage, 0);
+            print($"{transform.name} - Health left: " + _health);
 
-            print("Health left: " + health);
+            if (_health <= 0f)
+            {
+                RewardExperience();
+                Die();
+            }
         }
+
+        public void SetInstigator(ExperienceHandler instigator) => _instigator = instigator;
 
         private void Die(bool isImmediate = false)
         {
@@ -40,16 +70,24 @@ namespace RPG.Core
             print($"{gameObject.name} died!!");
         }
 
+        private void RewardExperience()
+        {
+            if (isPlayer) return;
+            var exp = _character.GetExperienceReward();
+            _instigator.RewardExperience(exp);
+        }
+
         public JToken CaptureAsJToken()
         {
-            return JToken.FromObject(health);
+            return JToken.FromObject(_health);
         }
 
         public void RestoreFromJToken(JToken state)
         {
-            health = state.ToObject<float>();
+            _health = state.ToObject<float>();
+            _isLoaded = true;
 
-            if (health <= 0f)
+            if (_health <= 0f)
                 Die(true);
         }
     }

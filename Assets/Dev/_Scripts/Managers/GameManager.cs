@@ -1,28 +1,31 @@
 using System;
 
-public class GameManager : Singleton<GameManager>
+namespace RPG.Managers
 {
-    public event Action<GameState> OnGameStateChange;
-    public GameState State { get; private set; }
-
-    private void Start() => InvokeOnStateChange(GameState.Start);
-
-    public void InvokeOnStateChange(GameState state)
+    public class GameManager : Singleton<GameManager>
     {
-        if (State == state) return;
-        State = state;
-        print($"Game State Changed to {state}");
+        public event Action<GameState> OnGameStateChange;
+        public GameState State { get; private set; }
 
-        OnGameStateChange?.Invoke(state);
+        private void Start() => InvokeOnStateChange(GameState.Start);
+
+        public void InvokeOnStateChange(GameState state)
+        {
+            if (State == state) return;
+            State = state;
+            print($"Game State Changed to {state}");
+
+            OnGameStateChange?.Invoke(state);
+        }
     }
-}
 
-[Serializable]
-public enum GameState
-{
-    Start = 0,
-    Moving = 1,
-    Attacking = 2,
-    Idle = 3,
-    Died = 4
+    [Serializable]
+    public enum GameState
+    {
+        Start = 0,
+        Moving = 1,
+        Attacking = 2,
+        Idle = 3,
+        Died = 4
+    }
 }

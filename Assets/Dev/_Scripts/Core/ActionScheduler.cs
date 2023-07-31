@@ -1,4 +1,4 @@
-using RPG.Core;
+using RPG.Interfaces;
 using UnityEngine;
 
 public class ActionScheduler : MonoBehaviour
